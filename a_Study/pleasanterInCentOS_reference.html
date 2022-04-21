@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    Pleasanter をCentOS7 に設置する
+    <ul>
+      .NET6.0 のインストール
+      <br>
+      .NET SDKのインストール
+      <li>sudo rpm -Uvh https://packages.microsoft.com/config/centos/7/packages-microsoft-prod.rpm</li>
+      <li>yum -y install wget</li>
+      <li>yum -y install epel-release</li>
+      <li>yum -y install dnf</li>
+      <li>dnf install -y dotnet-sdk-6.0</li>
+      <li>dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm</li>
+      <li>dnf install -y libgdiplus</li>
+      PostgreSQLのセットアップ
+      <br>
+      リポジトリのインストール
+      <li>dnf install -y https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm</li>
+      PostgreSQLのインストール
+      <li>dnf module -y disable postgresql</li>
+      <li>dnf install -y postgresql14-server postgresql14-contrib</li>
+      データベースの初期化
+      <li>/usr/pgsql-14/bin/postgresql-14-setup initdb</li>
+      サービス有効化
+      <li>systemctl enable postgresql-14</li>
+      認証方式の設定
+      <br>
+      /var/lib/pgsql/14/data/pg_hba.conf を開き、METHODの設定を以下のように変更します。
+      <li>TYPE  DATABASE        USER            ADDRESS                 METHOD</li>
+      <li>"local" is for Unix domain socket connections only</li>
+      <li>local   all             all                                     peer</li>
+      <li>IPv4 local connections:</li>
+      <li>host    all             all             127.0.0.1/32            md5</li>
+      <li>IPv6 local connections:</li>
+      <li>host    all             all             ::1/128                 md5</li>
+      <li>Allow replication connections from localhost, by a user with the</li>
+      <li>replication privilege.</li>
+      <li>local   replication     all                                     peer</li>
+      <li>host    replication     all             127.0.0.1/32            md5</li>
+      <li>host    replication     all             ::1/128                 md5</li>
+      ログの出力設定
+      <br>
+      /var/lib/pgsql/14/data/postgresql.confを開き、以下を設定します。
+      <li>log_destination = 'stderr'</li>
+      <li>logging_collector = on</li>
+      <li>log_line_prefix = '[%t]%u %d %p[%l]'</li>
+      ※ ログファイルは "/var/lib/pgsql/data/log" に保存されます。
+      <br>
+      <br>
+      PostgreSQLのサービス再起動
+      <li>systemctl restart postgresql-14</li>
+      PostgreSQLユーザー設定
+      <br>
+      PostgreSQL管理用のユーザー"postgres"(OSのユーザー)にパスワードを設定します。
+      <li>passwd postgres</li>　19960701pleasanter
+      ユーザー"postgres"に切り替え、PostgreSQLへ接続します。
+      <li>su - postgres</li>
+      <li>psql -U postgres</li>
+      PostgreSQLの管理ユーザー "postgres" のパスワードを設定
+      <li>postgres=# alter role postgres with password '19960701pleasanter';</li>
+      プリザンター用のデータベース作成
+      <br>
+      データベース "Implem.Pleasanter" を作成します。
+      <li>postgres=# create database "Implem.Pleasanter";</li>
+      以下のコマンドで作成したDBの確認を行います。
+      <li>postgres=# \l</li>
+      全⽂検索⽤モジュール（pg_trgm）のインストール
+      <br>
+      テキストの全⽂検索に必要なモジュール（pg_trgm）をインストールします。
+      <br>
+      データベース"Implem.Pleasanter"に接続し、pg_trgm をインストール
+      <li>postgres=# \c "Implem.Pleasanter";</li>
+      <li>Implem.Preasanter=# create extension pg_trgm;</li>
+      外部からDBへのアクセスを許可する場合の設定
+      <br>
+      /var/lib/pgsql/14/data/postgresql.conf の以下の2行のコメントを解除して下記のように設定します。
+      <li># - Connection Settings -</li>
+      <li>listen_addresses = '*'  # what IP address(es) to listen on;</li>
+      <li>port = 5432             # (change requires restart)</li>
+        /var/lib/pgsql/14/data/pg_hba.conf に以下の行を追加します。Address欄にはアクセスを許可するIPアドレスの範囲を指定します。
+      <li># TYPE  DATABASE        USER            ADDRESS                 METHOD</li>
+      <li>host    all             all             192.168.1.0/24          md5</li>
+      設定後、PostgreSQLのサービスを再起動します。
+      <li># systemctl restart postgresql-14</li>
+      プリザンター 1.3の導入
+      <br>
+      アプリケーションの準備
+      <br>
+      プリザンター 1.3をダウンロードします。
+      <li>https://github.com/Implem/Implem.Pleasanter.NetCore/releases/download/Pleasanter_1.3.2.0/Pleasanter_1.3.2.0.zip</li>
+      <li>https://github.com/Implem/Implem.Pleasanter.NetCore/archive/refs/tags/Pleasanter_1.3.2.0.tar.gz</li>
+      解凍する
+      <li>tar zxvf https://github.com/Implem/Implem.Pleasanter.NetCore/archive/refs/tags/Pleasanter_1.3.2.0.tar.gz
+      <br>
+      ルートディレクトリ（"/"）に"/web"フォルダーを作成し、そこに"pleasanter" フォルダーを配置するものとして記述します。
+      <br>
+      /web/pleasanter/Implem.Pleasanter
+      <br>
+      /web/pleasanter/Implem.CodeDefiner
+      <br>
+      /web/pleasanter/Tools
+      <br>
+      データベースの構成
+      <br>
+      /web/pleasanter/Implem.Pleasanter/App_Data/Parameters/Rds.json を以下のように設定します。
+      <li><br>
+        {<br>
+          "Dbms": "PostgreSQL",<br>
+          "Provider": "Local",<br>
+          "TimeZoneInfo": "Asia/Tokyo",<br>
+          "SaConnectionString":"Server=localhost;Port=5432;Database=postgres;UID=postgres;PWD=<設定したパスワード>",<br>
+          "OwnerConnectionString":"Server=localhost;Port=5432;Database=#ServiceName#;UID=#ServiceName#_Owner;PWD=SetAdminsPWD",<br>
+          "UserConnectionString":"Server=localhost;Port=5432;Database=#ServiceName#;UID=#ServiceName#_User;PWD=SetUsersPWD",<br>
+          "SqlCommandTimeOut": 600,<br>
+          "MinimumTime": 3,<br>
+          "DeadlockRetryCount": 4,<br>
+          "DeadlockRetryInterval": 1000<br>
+        }<br>
+      </li>
+      CodeDefinerを実行
+      <li># cd /web/pleasanter/Implem.CodeDefiner</li>
+      <li># dotnet Implem.CodeDefiner.dll _rds</li>
+      Pleasnterの起動確認
+      <li># cd ../Implem.Pleasanter</li>
+      <li># dotnet Implem.Pleasanter.dll</li>
+      別のターミナルで "http://localhost:5000/" にアクセスし、正常なレスポンスが帰ってくることを確認します。
+      <li># curl -v http://localhost:5000/</li>
+      <li>* About to connect() to localhost port 5000 (#0)</li>
+      <li>*   Trying ::1...</li>
+      <li>* Connected to localhost (::1) port 5000 (#0)</li>
+      > GET / HTTP/1.1 <br>
+      > User-Agent: curl/7.29.0 <br>
+      > Host: localhost:5000 <br>
+      > Accept: */* <br>
+      > <br>
+      < HTTP/1.1 302 Found <br>
+      < Date: Mon, 25 May 2020 15:13:08 GMT <br>
+      < Server: Kestrel <br>
+      < Content-Length: 0 <br>
+      < Location: http://localhost:5000/users/login?ReturnUrl=%2F <br>
+      確認できたらCtrl+Cで終了します。  <br>
+      Pleasanterサービス用スクリプトの作成 <br>
+      /etc/systemd/system/pleasanter.service を以下の内容で作成します。
+      <li><br>
+        [Unit] <br>
+        Description = Pleasanter <br>
+        Documentation = <br>
+        Wants=network.target <br>
+        After=network.target <br>
+        <br>
+        [Service] <br>
+        ExecStart = /usr/bin/dotnet Implem.Pleasanter.dll (※1) <br>
+        WorkingDirectory = /web/pleasanter/Implem.Pleasanter <br>
+        Restart = always <br>
+        RestartSec = 10 <br>
+        KillSignal=SIGINT <br>
+        SyslogIdentifier=dotnet-pleasanter <br>
+        User = root <br>
+        Group = root <br>
+        Environment=ASPNETCORE_ENVIRONMENT=Production <br>
+        Environment=DOTNET_PRINT_TELEMETRY_MESSAGE=false <br>
+        <br>
+        [Install] <br>
+        WantedBy = multi-user.target <br>
+      </li>
+      (※1)
+      この例はCentOS 7の場合の例です。その他のバージョンでご利用の場合、dotnetの実行パスを確認してから環境に応じて変更してください。以下のコマンドを実行してdotnetの実行パスを確認できます。
+      <li># which dotnet</li>
+      例えば上記のコマンドを実行し、dotnetの実行パスが/usr/local/bin/dotnetである場合は、(※1)の行は以下のように設定する必要があります。
+      dotnet の実行パスを、実際のディレクトリに合わせて変更する。
+      <li>/bin/dotnet</li>
+      <li>ExecStart = /usr/local/bin/dotnet Implem.Pleasanter.dll</li>
+      サービスとして登録・サービスの起動
+      <li># systemctl daemon-reload</li>
+      <li># systemctl enable pleasanter</li>
+      <li># systemctl start pleasanter</li>
+      リバースプロキシ（NginX）の設定
+      <br>
+      通常のwebサーバと同じ Port80 でアクセスできるようにリバースプロキシの設定を行います。
+      <br>
+      Nginxのインストール
+      <br>
+      次のコマンドでNginxをインストールします。
+      <li># dnf install -y nginx</li>
+      <li># systemctl enable nginx</li>
+      リバースプロキシの設定
+      <br>
+      /etc/nginx/conf.d/pleasanter.conf を以下の内容で作成します。server_name 行には実際アクセスする際のホスト名を指定します。
+      <li><br>
+        server { <br>
+          listen  80; <br>
+          server_name   192.168.1.100; <br>
+          client_max_body_size 100M; <br>
+          location / { <br>
+             proxy_pass         http://localhost:5000; <br>
+             proxy_http_version 1.1; <br>
+             proxy_set_header   Upgrade $http_upgrade; <br>
+             proxy_set_header   Connection keep-alive; <br>
+             proxy_set_header   Host $host; <br>
+             proxy_cache_bypass $http_upgrade; <br>
+             proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for; <br>
+             proxy_set_header   X-Forwarded-Proto $scheme; <br>
+            } <br>
+          } <br>
+      </li>
+      ファイルを作成後、NginXを再起動します。
+      <li># systemctl restart nginx</li>
+      Http へのアクセス許可
+      <br>
+      クライアントからWebサービスへアクセスさせるため、 Http（port:80）へのアクセス許可設定を行います。
+      <br>
+      ファイアーウォールをインストールする
+      <li>sudo yum update</li>
+      <li>sudo yum -y install firewalld</li>
+      ファイアーウォールを起動する
+      <li></li>
+      <li># firewall-cmd --permanent --zone=public --add-port=80/tcp</li>
+      <li># firewall-cmd --reload</li>
+      <li># firewall-cmd --list-all</li>
+      SELinux のhttpアクセス許可をONにします。
+      <li># setsebool httpd_can_network_connect on -P</li>
+      <li>systemctl start firewalld.service</li>
+      <li>systemctl enable firewalld</li>
+      <li></li>
+      <li></li>
+    </ul>
+  </body>
+</html>

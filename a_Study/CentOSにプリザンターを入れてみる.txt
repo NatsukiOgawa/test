@@ -1,0 +1,64 @@
+
+
+
+CentOS7 にプリザンターを入れてみる。
+
+
+
+dnf コマンドがインストールされていなかったので、s南港サイトより、インストールした
+→　https://qiita.com/piyojiro/items/58f9a89120808e1c1e84
+
+手順に戻る
+
+
+# passwd postgres で、パスワードを設定した
+→　19960701pleasanter
+
+postgres=# alter role postgres with password '<new password>'; のところで、
+パスワードを再び設定する
+→　19960701pleasanter
+
+
+/var/lib/pgsql/14/data/pg_hba.conf に以下の行を追加します。Address欄にはアクセスを許可するIPアドレスの範囲を指定します。   
+の部分で、ADDRESS のところを、35.160.192.0/24 とした。
+
+
+
+
+CodeDefinerを実行、の部分で、
+Implem.CodeDefiner.csproj というファイルがある。手順では、
+拡張子が、.dll になっている。手順通りに進めると、エラーが出た。
+「コマンド、またはファイルが存在しません」といった内容だった。
+→
+拡張子を変更して、作業を進めることにする。
+↑解決した。ダウンロード、解凍で、ちょっとやり方が違っていたみたい
+
+
+firewall がインストールされていなかったので、入れた
+→コマンドでは、「firewalld」となっていた。
+
+
+作業を一通り終えた。IP アドレスを、検索バーに打ち込んでみた。
+→503 bad gateway というエラー。
+
+確認を進めた。
+
+ホスト名(g年d難解ではip アドレス) の入力を、デフォルト、つまり
+見本通りに入れてしまっていた。修正した。
+
+同じエラーが出ている。
+
+firewall が起動していないことに気が付いた。起動する。
+→　https://ysklog.net/server/1155.html
+
+
+firewall にて、新たなエラー。
+→「authorization failed. make sure polkit agent is running or run the application as superuser」
+　→それらしいサイトを見つけてトライ。
+　　→(  https://rintaro2019.hatenablog.com/entry/2019/12/18/114152)
+
+ページへの接続が、タイムアウトになった。
+
+firewakk をｍ無効にしてみる。
+
+502 bad gateway になった。

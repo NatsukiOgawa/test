@@ -1,0 +1,73 @@
+
+
+AWS を使って、webサーバを立ててみる
+
+
+ーーーーーーーーーーーーーーーーーーーーーー
+AWS のサイトにアクセスする→ https://aws.amazon.com/jp/?aws-products-featured.sort-by=item.additionalFields.featuredRank&aws-products-featured.sort-order=asc&aws-products-analytics.sort-by=item.additionalFields.productNameLowercase&aws-products-analytics.sort-order=asc&aws-products-cost-mgmt.sort-by=item.additionalFields.productNameLowercase&aws-products-cost-mgmt.sort-order=asc&aws-products-compute.sort-by=item.additionalFields.productNameLowercase&aws-products-compute.sort-order=asc&aws-products-containers.sort-by=item.additionalFields.productNameLowercase&aws-products-containers.sort-order=asc&aws-products-databases.sort-by=item.additionalFields.productNameLowercase&aws-products-databases.sort-order=asc&aws-products-fe-mobile.sort-by=item.additionalFields.productNameLowercase&aws-products-fe-mobile.sort-order=asc&aws-products-iot.sort-by=item.additionalFields.productNameLowercase&aws-products-iot.sort-order=asc&aws-products-ml.sort-by=item.additionalFields.productNameLowercase&aws-products-ml.sort-order=asc&aws-products-network.sort-by=item.additionalFields.productNameLowercase&aws-products-network.sort-order=asc&aws-products-security.sort-by=item.additionalFields.productNameLowercase&aws-products-security.sort-order=asc&aws-products-storage.sort-by=item.additionalFields.productNameLowercase&aws-products-storage.sort-order=asc
+
+画面中央の、「サインアップを完了するにはこちら」をクリックする
+
+「ルートユーザー」が選択されており、「ルートユーザーのEメールアドレス」には、
+「ogawanatsuki19960701@gmail.com」が、あらかじめ入力されている。
+
+「次へ」をクリックする
+
+セキュリティチェックにて、文字列を入力する
+　→入力して送信
+
+パスワードを入力してログインする
+
+「AWS マネジメントコンソールへ進む」をクリックする
+
+アカウントを90 日以上放置したため、閉鎖されてしまったようである。
+　→以前とは別のメールアドレスでの登録が必要のようだ
+
+ログアウトしてから、「コンソールにサインイン」をクリックする
+
+「サインイン」ページにて、「ルートユーザー」が選択されている。
+
+「ルートユーザーのEメールアドレス」には、閉鎖されたアカウントのアドレスが入力されている。
+
+スクロールして、画面下部の「新しいAWS アカウントの作成」をクリックする
+
+「AWS にサインアップ」の画面で、「Eメールアドレス」と「AWS アカウント名」を入力する
+　→「Eメールアドレス」：「mqiang838@gmail.com」、「AWS アカウント名」：「study」とする
+
+パスワードを決めて、次のページに進む。
+
+「AWS にサインアップ」にて、「AWS はどのように使用されますか?」について、「個人- ご自身のプロジェクト向け」を選択する
+
+「フルネーム」　　　　　　：「NatsukiOgawa」
+「電話番号」　　　　　　　：「08025269403」
+「国または地域コード」　　：「日本」
+「住所」　　　　　　　　　：「nishi-ku, kasumigaoka50」「Shamaison-kasumi,101」
+「市区町村」　　　　　　　：「Yokohama」
+「州/都道府県または地域」 ：「Kanagawa」
+
+「クレジットカード番号」、「有効期限」、「カード保有者の氏名」を入力する
+「請求先住所」は、「連絡先住所を使用する」を選択する(前のページで入力した情報がグレースケールで表示されている)
+
+「確認して次へ」をクリックして進む
+
+「AWS にサインアップ」では、
+「検証コードの受け取り方法」：「テキストメッセージ(SMS)」
+「国または地域コード」　　　：「日本(+81)」
+「携帯電話番号」　　　　　　：「08025269403」
+
+
+メッセージを受けとり、入力して次へ進む
+
+「AWS にサインアップ」にて、サポートプランを選択する
+　→左端の、「ベーシックサポート-無料」を選択する
+
+「サインアップを完了」をクリックする
+
+完了のメールがくる
+
+「AWS マネジメントコンソールに進む」をクリックする
+
+
+AWS の利用が可能になった
+
+

@@ -1,0 +1,42 @@
+
+
+
+CentOS7 にプリザンターを入れてみる・その２
+
+
+dnf コマンドが使えなかったので、インストールする。
+→　参考サイト　https://qiita.com/piyojiro/items/58f9a89120808e1c1e84
+
+
+PW:19960701pleasanter
+
+https://github.com/Implem/Implem.Pleasanter.NetCore/releases/download/Pleasanter_1.3.2.0/Pleasanter_1.3.2.0.zip
+
+https://github.com/Implem/Implem.Pleasanter.NetCore/archive/refs/tags/Pleasanter_1.3.2.0.tar.gz
+
+
+tar.gz ファイルの解凍方法
+→ 参考サイト　https://qiita.com/dounokouno/items/d53b58b863a0fbb43fe0
+
+dotnet の実行パスを、実際のディレクトリに合わせて変更した。
+
+
+firewall が入っていなかったので、インストールする
+→参考ページ　https://qiita.com/ponsuke0531/items/b90a837fc1e839d905c3
+
+firewalld is not running というエラー。
+→参考サイト　https://ysklog.net/server/1155.html
+
+
+手順を完了し、ページを起動。
+502 Gateway のエラーが出た。
+インスタンスを停止し、しばらくしてから起動すると、
+うまく動作した。
+
+
+成功した。
+
+
+dotnet の参考ページのコマンド
+
+

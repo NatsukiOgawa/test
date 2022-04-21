@@ -1,0 +1,106 @@
+
+
+
+＠＠＠プリザンターをwindows server 2019 に入れてみる＠＠＠
+
+
+
+AWS にアクセス・ログインする(mqiang838@gmail.com)
+
+少し下スクロールして、「仮想サーバーを使用した構築 Lightsail 1～2分」をクリックする
+
+「Pick your instance image」セクションで、「Select a platform」にて「Microsoft Windows」を、
+「Select a blueprint」にて、「OS Only」で「Windows Server 2019」を選択した。
+
+少し下スクロールして、「Identify your instance」にて、インスタンス名を決める(任意・一意)
+
+最下部までスクロールして、「Create instance」をクリックする
+
+インスタンスの表示が、「Pending」から「Running」に変化すると、インスタンスが稼働しているので、クリックする
+
+「Use your browser」にて、「Connect using RDP」をクリックすると、インスタンスに接続できる
+
+表示が英語になっているので、参考ページの図と見比べながら進めていく
+
+「開始する前に」画面で、画面サイズの関係で「次へ(N)」ボタンがクリックできなかったので、エンターキーで進む
+
+「インストールの種類の選択」画面でも、同じくエンターキーで進む
+
+「サーバの選択」画面にて、選択しが一つしかないので、そのままエンターキーで進んでみる
+　→[EC2AMAZ-SBV349N] [172.26.9.159] [Microsoft Windows Server 2019 Datacenter]
+　　Name              IP Adress      Operating System
+
+エンターキーでなくとも、左ペインのクリックで進むことができることを発見した
+
+「インストールオプションの確認」画面にて、画面下部の「インストール(I)」ボタンをクリックできなかったので、
+「Shift + i」で対応した。インストールが始まった。
+
+
+
+
+
+「SQL Server 2019 Expressのインストール及び設定」セクションにて、
+「3. Express Advanced」にチェックを付け、「ダウンロード(D)」ボタンをクリックしてください。」画面の
+ダウンロードボタンを、画面の関係でクリックできなかった。キーボードの「Shift + d」で対応した
+
+ダウンロードが終了した。「フォルダーを開く」ボタンがクリックできなかったので、自力でフォルダを開く
+
+「展開されたファイルのディレクトリの選択」にて、ディレクトリが指定されている
+　→ Downloads 直下
+
+「データベース　エンジンの構成」画面にて、パスワードを決める
+　→PW:19960701Pleasanterserver
+
+「SQL Server 2019 Express with Advanced Servicesの設定」にて、
+AWS 上でSQL Server Configuration Manager を起動しようとしたが、エラーがでて、不可能だった。
+→　Cannot connect to WMI provider. You do not have permission or the server is unreachable.
+    Note that you can only manage SQL Server 2005 and later servers with SQL Server Configuration Manager.
+
+以前、自前のWindows10 Home にプリザンターを入れたときには、省略しても問題ない手順であったので、
+今回は飛ばして、次の手順に入ることにする
+
+
+「SQL Server Management Studioのダウンロード」セクションに移る。
+
+参考サイトのURL にアクセスすると、バージョンが違っていた。
+参考サイトでは17.x となっているが、今回は、依然と同じく18.10 をダウンロードする
+
+
+
+
+結局、あきらめて、新たに同じくWindows Server 2019 のインスタンスを立ち上げて、作業を再度進めた。
+
+「プリザンターをWindowsにインストールする」セクションにて、「Internet Explorer enhanced Security Configuration」というものに引っ掛かり、
+必要ファイルのダウンロードができない。Windows server に備わっている機能のようである。
+無効化する方法をネットで検索してみた。
+フィルタリングのようなものなのかもしれない。ワードを検索するたびにポップアップが出現していた。
+また機会があれば、調べてみることにする。今回は、作業の進行を優先する。
+
+参考サイト→　https://cloudpack.media/5928
+
+プリザンターのインストール後、ローカルサーバを起動してみると、エラーが出た。
+
+「HTTP Error 500.30 - ASP.NET Core app failed to start」
+
+
+
+
+
+再度、Windows server 2019 で試してみる
+
+「プリザンターをWindowsにインストールする」セクションにて、
+指定されたURL で、.NET 5.0 をダウンロードする手順に関して。
+→ Arm64、x64、x86 のうち、x64 を選択した。
+　→今回もうまくいかなければ、ここの段階に戻ってきて、違う種類のものをインストールしてみるのもいいかもしれない。
+
+
+
+
+
+
+
+
+
+
+
+
